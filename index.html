@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lifer_Lighdow APP STORE</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- LXGW Marker Gothic TC Font -->
+    <link href="https://cdn.jsdelivr.net/npm/lxgw-marker-gothic-tc@1.x/dist/lxgw-marker-gothic-tc.css" rel="stylesheet">
+    <style>
+        /* 使用 LXGW Marker Gothic TC 字體 */
+        body {
+            font-family: 'LXGW Marker Gothic TC', 'Inter', sans-serif;
+        }
+
+        /* 全域霓虹脈衝動畫和所有 CSS 動畫定義 */
+        @keyframes pulse-neon {
+            0%, 100% { text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 15px #00FFFF, 0 0 20px #FF00FF, 0 0 35px #FF00FF, 0 0 40px #FF00FF, 0 0 50px #FF00FF, 0 0 75px #FF00FF; }
+            50% { text-shadow: none; }
+        }
+        .animate-pulse-neon {
+            animation: pulse-neon 4s infinite alternate;
+        }
+        .text-neon-pink { color: #FF00FF; }
+        .text-neon-blue { color: #00FFFF; }
+        .drop-shadow-neon { filter: drop-shadow(0 0 3px #FF00FF) drop-shadow(0 0 6px #00FFFF); }
+
+        /* 掃描線動畫 */
+        .scanline-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,255,255,0.1) 1px, transparent 1px);
+            background-size: 100% 4px;
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        /* 故障效果 */
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        .glitch-text {
+            animation: glitch-effect 0.5s infinite alternate;
+        }
+
+        /* Hero 區塊的背景粒子動畫 */
+        @keyframes blob {
+            0% { transform: scale(1) translate(0, 0); }
+            33% { transform: scale(1.1) translate(20px, -30px); }
+            66% { transform: scale(0.9) translate(-10px, 40px); }
+            100% { transform: scale(1) translate(0, 0); }
+        }
+        .animate-blob { animation: blob 10s infinite alternate; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+
+        /* 精選應用程式卡片動態背景元素 */
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-subtle { animation: pulse-subtle 6s infinite alternate; }
+
+        /* 打字機效果光標 */
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .animate-blink-cursor {
+            animation: blink-cursor 1s infinite step-end;
+        }
+        /* 網格背景圖案 */
+        .bg-grid-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239B2C2C' fill-opacity='0.1'%3E%3Cpath d='M8 0H0L20 20V12H12z'/%3E%3Cpath d='M20 0h-8L0 20h8L20 0z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-gray-100 antialiased overflow-x-hidden">
+
+    <!-- 導覽列 -->
+    <nav class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-sm fixed w-full z-50 p-4 border-b border-purple-800 shadow-lg rounded-b-xl">
+        <div class="container mx-auto flex justify-between items-center px-4 md:px-6 lg:px-8">
+            <a href="#" class="flex items-center space-x-2 text-2xl md:text-3xl font-bold text-neon-blue animate-pulse-neon">
+                <span class="font-mono" id="appNamePart1">Lifer</span>
+                <span class="text-neon-pink font-mono" id="appNamePart2">_Lighdow</span>
+                <span class="text-gray-300 text-sm md:text-base font-mono"> APP STORE</span>
+            </a>
+
+            <div class="hidden md:flex items-center space-x-6">
+                <div class="relative">
+                    <select id="languageSelector" class="bg-gray-800 text-neon-blue border border-purple-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 hover:border-purple-400">
+                        <option value="zh_TW">繁體中文</option>
+                        <option value="zh_CN">简体中文</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                    </select>
+                </div>
+                <div class="relative">
+                    <input type="text" id="searchDesktop" placeholder="搜尋應用程式..." class="bg-gray-800 text-gray-100 placeholder-gray-500 pl-10 pr-4 py-2 rounded-full border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 transition-all duration-300 w-64 md:w-80" />
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> <!-- LucideSearch -->
+                </div>
+            </div>
+
+            <button id="menuToggle" class="md:hidden text-purple-400 focus:outline-none">
+                <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg> <!-- LucideMenu -->
+                <svg id="closeIcon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> <!-- LucideX -->
+            </button>
+        </div>
+
+        <!-- 行動裝置選單 -->
+        <div id="mobileMenu" class="md:hidden mt-4 px-4 pb-4 hidden">
+            <div class="relative mb-4">
+                <select id="languageSelectorMobile" class="w-full bg-gray-800 text-neon-blue border border-purple-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 hover:border-purple-400">
+                    <option value="zh_TW">繁體中文</option>
+                    <option value="zh_CN">简体中文</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                </select>
+            </div>
+            <div class="relative">
+                <input type="text" id="searchMobile" placeholder="搜尋應用程式..." class="w-full bg-gray-800 text-gray-100 placeholder-gray-500 pl-10 pr-4 py-2 rounded-full border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 transition-all duration-300" />
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> <!-- LucideSearch -->
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 md:px-6 lg:px-8 pt-24 pb-12 relative z-10">
+        <!-- 霓虹網格背景 -->
+        <div class="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none z-0"></div>
+        <div class="absolute inset-0 scanline-effect opacity-20 pointer-events-none z-0"></div>
+
+        <!-- 英雄區塊 -->
+        <section class="relative h-[60vh] md:h-[70vh] flex items-center justify-center text-center rounded-2xl overflow-hidden mb-16 shadow-2xl bg-gradient-to-br from-indigo-900 to-purple-900 border border-purple-700">
+            <!-- 背景粒子動畫 -->
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-neon-blue rounded-full mix-blend-screen opacity-10 animate-blob"></div>
+                <div class="absolute top-1/2 right-1/4 w-40 h-40 bg-neon-pink rounded-full mix-blend-screen opacity-10 animate-blob animation-delay-2000"></div>
+                <div class="absolute bottom-1/4 left-1/2 w-24 h-24 bg-purple-500 rounded-full mix-blend-screen opacity-10 animate-blob animation-delay-4000"></div>
+            </div>
+
+            <div class="relative z-10 p-6 max-w-4xl">
+                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-4 leading-tight">
+                    <span id="heroText" class="glitch-text animate-pulse-neon text-neon-pink drop-shadow-neon"></span>
+                    <span class="animate-blink-cursor inline-block w-1.5 h-8 sm:h-10 lg:h-12 bg-neon-pink ml-1"></span>
+                </h1>
+                <p id="exploreNow" class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto drop-shadow-lg">
+                    立即探索
+                </p>
+                <button id="allAppsBtn" class="bg-gradient-to-r from-neon-blue to-neon-pink text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-neon-glow transition-all duration-300 transform hover:scale-105 active:scale-95 border-2 border-transparent hover:border-white">
+                    <span class="relative z-10">所有應用程式</span>
+                    <span class="absolute inset-0 rounded-full bg-black opacity-0 hover:opacity-20 transition-opacity"></span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 應用程式類別 -->
+        <section class="mb-16">
+            <h2 id="categoriesTitle" class="text-3xl md:text-4xl font-bold text-center mb-10 text-neon-blue animate-pulse-neon">
+                應用程式類別
+            </h2>
+            <div id="categoriesContainer" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Categories will be rendered here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- 精選應用程式 -->
+        <section class="mb-16">
+            <h2 id="featuredAppsTitle" class="text-3xl md:text-4xl font-bold text-center mb-10 text-neon-pink animate-pulse-neon">
+                精選應用程式
+            </h2>
+            <div id="featuredAppsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Featured apps will be rendered here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- 所有應用程式 -->
+        <section>
+            <h2 id="allAppsTitle" class="text-3xl md:text-4xl font-bold text-center mb-10 text-neon-blue animate-pulse-neon">
+                所有應用程式
+            </h2>
+            <div id="allAppsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- All apps will be rendered here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-sm p-6 text-center text-gray-500 border-t border-purple-800 rounded-t-xl mt-16">
+        <p><span id="copyrightYear"></span> <span id="footerAppName">Lifer_Lighdow APP STORE</span>. <span id="rightsReserved">版權所有。</span></p>
+    </footer>
+
+    <script>
+        const messages = {
+            en: {
+                appName: "Lifer_Lighdow APP STORE",
+                slogan: "Explore the Future. Download Limitless.",
+                searchPlaceholder: "Search apps...",
+                categories: "Categories",
+                featuredApps: "Featured Apps",
+                allApps: "All Apps",
+                gaming: "Gaming",
+                productivity: "Productivity",
+                entertainment: "Entertainment",
+                tools: "Tools",
+                download: "Download",
+                rightsReserved: "All rights reserved.",
+                language: "Language",
+                exploreNow: "Explore Now",
+                trending: "Trending",
+                newArrivals: "New Arrivals",
+                cyberpunkOS: "Cyberpunk OS",
+                neonRunner: "Neon Runner",
+                synthwaveStudio: "Synthwave Studio",
+                dataStream: "Data Stream",
+                virtualHorizon: "Virtual Horizon",
+                aiAssistant: "AI Assistant",
+                brainBoost: "Brain Boost",
+                metaverseExplorer: "Metaverse Explorer",
+                securitySuite: "Security Suite",
+            },
+            zh_TW: {
+                appName: "Lifer_Lighdow APP STORE",
+                slogan: "探索未來。下載無限。",
+                searchPlaceholder: "搜尋應用程式...",
+                categories: "應用程式類別",
+                featuredApps: "精選應用程式",
+                allApps: "所有應用程式",
+                gaming: "遊戲",
+                productivity: "生產力工具",
+                entertainment: "娛樂",
+                tools: "工具",
+                download: "下載",
+                rightsReserved: "版權所有。",
+                language: "語言",
+                exploreNow: "立即探索",
+                trending: "熱門趨勢",
+                newArrivals: "最新上架",
+                cyberpunkOS: "賽博龐克作業系統",
+                neonRunner: "霓虹跑者",
+                synthwaveStudio: "合成波工作室",
+                dataStream: "數據流",
+                virtualHorizon: "虛擬地平線",
+                aiAssistant: "AI 助理",
+                brainBoost: "腦力增強",
+                metaverseExplorer: "元宇宙探索者",
+                securitySuite: "安全套件",
+            },
+            zh_CN: {
+                appName: "Lifer_Lighdow APP STORE",
+                slogan: "探索未来。下载无限。",
+                searchPlaceholder: "搜索应用程序...",
+                categories: "应用程序类别",
+                featuredApps: "精选应用程序",
+                allApps: "所有应用程序",
+                gaming: "游戏",
+                productivity: "生产力工具",
+                entertainment: "娱乐",
+                tools: "工具",
+                download: "下载",
+                rightsReserved: "版权所有。",
+                language: "语言",
+                exploreNow: "立即探索",
+                trending: "热门趋势",
+                newArrivals: "最新上架",
+                cyberpunkOS: "赛博朋克操作系统",
+                neonRunner: "霓虹跑者",
+                synthwaveStudio: "合成波工作室",
+                dataStream: "数据流",
+                virtualHorizon: "虚拟地平线",
+                aiAssistant: "AI 助理",
+                brainBoost: "脑力增强",
+                metaverseExplorer: "元宇宙探索者",
+                securitySuite: "安全套件",
+            },
+            ja: {
+                appName: "Lifer_Lighdow APP STORE",
+                slogan: "未来を探索。無限をダウンロード。",
+                searchPlaceholder: "アプリを検索...",
+                categories: "カテゴリ",
+                featuredApps: "おすすめアプリ",
+                allApps: "すべてのアプリ",
+                gaming: "ゲーム",
+                productivity: "生産性",
+                entertainment: "エンターテイメント",
+                tools: "ツール",
+                download: "ダウンロード",
+                rightsReserved: "全著作権所有。",
+                language: "言語",
+                exploreNow: "今すぐ探索",
+                trending: "トレンド",
+                newArrivals: "新着",
+                cyberpunkOS: "サイバーパンクOS",
+                neonRunner: "ネオンランナー",
+                synthwaveStudio: "シンセウェーブスタジオ",
+                dataStream: "データストリーム",
+                virtualHorizon: "バーチャルホライゾン",
+                aiAssistant: "AIアシスタント",
+                brainBoost: "脳ブースト",
+                metaverseExplorer: "メタバースエクスプローラー",
+                securitySuite: "セキュリティスイート",
+            },
+        };
+
+        let currentLang = 'zh_TW';
+        let heroTextInterval;
+        let heroTextTimeout;
+
+        // 應用程式數據 (簡化版)
+        const appData = [
+            { id: 1, nameKey: 'cyberpunkOS', categoryKey: 'tools', image: 'https://placehold.co/120x120/1a1a2e/e0e0e0?text=OS' },
+            { id: 2, nameKey: 'neonRunner', categoryKey: 'gaming', image: 'https://placehold.co/120x120/0f0f0f/00ff00?text=RUN' },
+            { id: 3, nameKey: 'synthwaveStudio', categoryKey: 'entertainment', image: 'https://placehold.co/120x120/2b0f49/ff00ff?text=SYNTH' },
+            { id: 4, nameKey: 'dataStream', categoryKey: 'productivity', image: 'https://placehold.co/120x120/000000/00ffff?text=DATA' },
+            { id: 5, nameKey: 'virtualHorizon', categoryKey: 'gaming', image: 'https://placehold.co/120x120/0a0a0a/00aaff?text=VR' },
+            { id: 6, nameKey: 'aiAssistant', categoryKey: 'productivity', image: 'https://placehold.co/120x120/0d0d0d/ffdd00?text=AI' },
+            { id: 7, nameKey: 'brainBoost', categoryKey: 'tools', image: 'https://placehold.co/120x120/111111/ff0077?text=BRAIN' },
+            { id: 8, nameKey: 'metaverseExplorer', categoryKey: 'entertainment', image: 'https://placehold.co/120x120/050505/cc66ff?text=META' },
+            { id: 9, nameKey: 'securitySuite', categoryKey: 'tools', image: 'https://placehold.co/120x120/020202/00ffaa?text=SECURE' },
+        ];
+
+        // 更新頁面所有文本內容的函數
+        function updateContent() {
+            const currentMessages = messages[currentLang];
+
+            // 導覽列
+            document.getElementById('appNamePart1').textContent = currentMessages.appName.split('_')[0];
+            document.getElementById('appNamePart2').textContent = '_' + currentMessages.appName.split('_')[1].split(' ')[0];
+            document.getElementById('searchDesktop').placeholder = currentMessages.searchPlaceholder;
+            document.getElementById('searchMobile').placeholder = currentMessages.searchPlaceholder;
+
+            // 英雄區塊
+            startHeroTextAnimation(currentMessages.slogan);
+            document.getElementById('exploreNow').textContent = currentMessages.exploreNow;
+            document.getElementById('allAppsBtn').querySelector('span:first-child').textContent = currentMessages.allApps;
+
+            // 應用程式類別
+            document.getElementById('categoriesTitle').textContent = currentMessages.categories;
+            renderCategories(currentMessages);
+
+            // 精選應用程式
+            document.getElementById('featuredAppsTitle').textContent = currentMessages.featuredApps;
+            renderFeaturedApps(currentMessages);
+
+            // 所有應用程式
+            document.getElementById('allAppsTitle').textContent = currentMessages.allApps;
+            renderAllApps(currentMessages);
+
+            // 頁腳
+            document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+            document.getElementById('footerAppName').textContent = currentMessages.appName;
+            document.getElementById('rightsReserved').textContent = currentMessages.rightsReserved;
+        }
+
+        // 啟動英雄區塊文字動畫
+        function startHeroTextAnimation(fullText) {
+            const heroTextElement = document.getElementById('heroText');
+            heroTextElement.textContent = ''; // 清空現有文本
+            let textIndex = 0;
+
+            if (heroTextInterval) clearInterval(heroTextInterval);
+            if (heroTextTimeout) clearTimeout(heroTextTimeout);
+
+            function typeCharacter() {
+                if (textIndex < fullText.length) {
+                    heroTextElement.textContent += fullText[textIndex];
+                    textIndex++;
+                    heroTextTimeout = setTimeout(typeCharacter, 70); // 文字輸入速度
+                }
+            }
+            typeCharacter();
+        }
+
+        // 渲染應用程式類別
+        function renderCategories(currentMessages) {
+            const categoriesContainer = document.getElementById('categoriesContainer');
+            categoriesContainer.innerHTML = ''; // 清空現有內容
+
+            const categories = [
+                { labelKey: 'gaming', icon: '🎮' },
+                { labelKey: 'productivity', icon: '📈' },
+                { labelKey: 'entertainment', icon: '🎬' },
+                { labelKey: 'tools', icon: '🛠️' }
+            ];
+
+            categories.forEach(category => {
+                const div = document.createElement('div');
+                div.className = "group bg-gray-800 rounded-xl p-6 text-center cursor-pointer hover:bg-purple-900 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-xl border border-gray-700 hover:border-neon-pink relative overflow-hidden";
+                div.innerHTML = `
+                    <div class="absolute inset-0 border-animated group-hover:border-neon-blue"></div>
+                    <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300">${category.icon}</div>
+                    <h3 class="text-xl font-semibold text-gray-100 group-hover:text-neon-pink transition-colors">${currentMessages[category.labelKey]}</h3>
+                    <span class="absolute bottom-2 right-2 text-gray-600 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">{'->'}</span>
+                `;
+                categoriesContainer.appendChild(div);
+            });
+        }
+
+        // 渲染精選應用程式
+        function renderFeaturedApps(currentMessages) {
+            const featuredAppsContainer = document.getElementById('featuredAppsContainer');
+            featuredAppsContainer.innerHTML = ''; // 清空現有內容
+
+            const featuredApps = appData.slice(0, 3);
+
+            featuredApps.forEach(app => {
+                const div = document.createElement('div');
+                div.className = "bg-gray-800 rounded-xl p-6 flex flex-col items-center text-center shadow-lg border border-purple-800 hover:border-neon-blue transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl relative overflow-hidden";
+                div.innerHTML = `
+                    <div class="absolute inset-0 bg-gradient-to-br from-gray-900 to-purple-950 opacity-50 z-0 animate-pulse-subtle"></div>
+                    <img src="${app.image}" alt="${currentMessages[app.nameKey]}" class="w-28 h-28 rounded-2xl object-cover mb-4 border-2 border-neon-blue shadow-md transform group-hover:scale-110 transition-transform duration-300 z-10" onerror="this.onerror=null;this.src='https://placehold.co/120x120/333/eee?text=App';" />
+                    <h3 class="text-2xl font-semibold text-gray-100 mb-2 glitch-text z-10">${currentMessages[app.nameKey]}</h3>
+                    <p class="text-purple-400 text-sm mb-4 z-10">${currentMessages[app.categoryKey]}</p>
+                    <button class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2 px-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 active:scale-95 border border-transparent hover:border-white z-10">
+                        ${currentMessages.download}
+                    </button>
+                `;
+                featuredAppsContainer.appendChild(div);
+            });
+        }
+
+        // 渲染所有應用程式
+        function renderAllApps(currentMessages) {
+            const allAppsContainer = document.getElementById('allAppsContainer');
+            allAppsContainer.innerHTML = ''; // 清空現有內容
+
+            appData.forEach(app => {
+                const div = document.createElement('div');
+                div.className = "flex items-center bg-gray-800 rounded-xl p-4 shadow-md border border-gray-700 hover:border-purple-600 transition-all duration-300 transform hover:translate-x-1";
+                div.innerHTML = `
+                    <img src="${app.image}" alt="${currentMessages[app.nameKey]}" class="w-16 h-16 rounded-lg object-cover mr-4 border border-purple-500" onerror="this.onerror=null;this.src='https://placehold.co/64x64/333/eee?text=App';" />
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-semibold text-gray-100">${currentMessages[app.nameKey]}</h3>
+                        <p class="text-purple-400 text-sm">${currentMessages[app.categoryKey]}</p>
+                    </div>
+                    <button class="bg-purple-700 text-white text-sm py-1.5 px-4 rounded-full hover:bg-purple-600 transition-colors duration-300 active:scale-95">
+                        ${currentMessages.download}
+                    </button>
+                `;
+                allAppsContainer.appendChild(div);
+            });
+        }
+
+        // 事件監聽器
+        document.addEventListener('DOMContentLoaded', () => {
+            const languageSelector = document.getElementById('languageSelector');
+            const languageSelectorMobile = document.getElementById('languageSelectorMobile');
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = document.getElementById('menuIcon');
+            const closeIcon = document.getElementById('closeIcon');
+
+            // 初始化語言選擇器
+            languageSelector.value = currentLang;
+            languageSelectorMobile.value = currentLang;
+
+            languageSelector.addEventListener('change', (event) => {
+                currentLang = event.target.value;
+                languageSelectorMobile.value = currentLang; // 同步行動版選擇器
+                updateContent();
+            });
+
+            languageSelectorMobile.addEventListener('change', (event) => {
+                currentLang = event.target.value;
+                languageSelector.value = currentLang; // 同步桌面版選擇器
+                updateContent();
+            });
+
+            menuToggle.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    menuIcon.classList.add('hidden');
+                    closeIcon.classList.remove('hidden');
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                }
+            });
+
+            updateContent(); // 初始加載內容
+        });
+    </script>
+</body>
+</html>
