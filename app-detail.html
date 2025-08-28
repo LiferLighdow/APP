@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Lifer_Lighdow APP STORE - 應用程式詳情</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- LXGW Marker Gothic TC Font -->
+    <link href="https://cdn.jsdelivr.net/npm/lxgw-marker-gothic-tc@1.x/dist/lxgw-marker-gothic-tc.css" rel="stylesheet">
+    <style>
+        /* 使用 LXGW Marker Gothic TC 字體 */
+        body {
+            font-family: 'LXGW Marker Gothic TC', 'Inter', sans-serif;
+        }
+
+        /* 全域霓虹脈衝動畫和所有 CSS 動畫定義 */
+        @keyframes pulse-neon {
+            0%, 100% { text-shadow: 0 0 5px #00FFFF, 0 0 10px #00FFFF, 0 0 15px #00FFFF, 0 0 20px #FF00FF, 0 0 35px #FF00FF, 0 0 40px #FF00FF, 0 0 50px #FF00FF, 0 0 75px #FF00FF; }
+            50% { text-shadow: none; }
+        }
+        .animate-pulse-neon {
+            animation: pulse-neon 4s infinite alternate;
+        }
+        .text-neon-pink { color: #FF00FF; }
+        .text-neon-blue { color: #00FFFF; }
+        .drop-shadow-neon { filter: drop-shadow(0 0 3px #FF00FF) drop-shadow(0 0 6px #00FFFF); }
+
+        /* 掃描線動畫 */
+        .scanline-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,255,255,0.1) 1px, transparent 1px);
+            background-size: 100% 4px;
+            animation: scanline 8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        /* 故障效果 */
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        .glitch-text {
+            animation: glitch-effect 0.5s infinite alternate;
+        }
+
+        /* 打字機效果光標 */
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .animate-blink-cursor {
+            animation: blink-cursor 1s infinite step-end;
+        }
+        /* 網格背景圖案 */
+        .bg-grid-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239B2C2C' fill-opacity='0.1'%3E%3Cpath d='M8 0H0L20 20V12H12z'/%3E%3Cpath d='M20 0h-8L0 20h8L20 0z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-gray-100 antialiased overflow-x-hidden">
+
+    <!-- 導覽列 -->
+    <nav class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-sm fixed w-full z-50 p-4 border-b border-purple-800 shadow-lg rounded-b-xl">
+        <div class="container mx-auto flex justify-between items-center px-4 md:px-6 lg:px-8">
+            <a href="index.html" class="flex items-center space-x-2 text-2xl md:text-3xl font-bold text-neon-blue animate-pulse-neon">
+                <span class="font-mono" id="appNamePart1">Lifer</span>
+                <span class="text-neon-pink font-mono" id="appNamePart2">_Lighdow</span>
+                <span class="text-gray-300 text-sm md:text-base font-mono"> APP STORE</span>
+            </a>
+
+            <div class="flex items-center space-x-4 md:space-x-6">
+                <a href="index.html" id="backToHomeBtn" class="bg-gray-700 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 hidden md:inline-block">
+                    返回首頁
+                </a>
+                <div class="relative">
+                    <select id="languageSelector" class="bg-gray-800 text-neon-blue border border-purple-600 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300 hover:border-purple-400">
+                        <option value="zh_TW">繁體中文</option>
+                        <option value="zh_CN">简体中文</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 md:px-6 lg:px-8 pt-24 pb-12 relative z-10">
+        <!-- 霓虹網格背景 -->
+        <div class="absolute inset-0 bg-grid-pattern opacity-10 pointer-events-none z-0"></div>
+        <div class="absolute inset-0 scanline-effect opacity-20 pointer-events-none z-0"></div>
+
+        <section class="mb-16 bg-gray-900 rounded-2xl p-6 md:p-10 shadow-2xl border border-purple-700 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-900 to-indigo-900 opacity-20 z-0"></div>
+            <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-8">
+                <img id="appIcon" src="https://placehold.co/150x150/333/eee?text=App" alt="App Icon" class="w-32 h-32 md:w-48 md:h-48 rounded-3xl object-cover border-4 border-neon-blue shadow-lg flex-shrink-0" onerror="this.onerror=null;this.src='https://placehold.co/150x150/333/eee?text=App';" />
+                <div class="flex-grow text-center md:text-left">
+                    <h1 id="appDetailName" class="text-4xl md:text-5xl font-extrabold text-neon-pink glitch-text mb-2">應用程式名稱</h1>
+                    <p id="appDeveloper" class="text-lg text-gray-400 mb-2">開發者：<span class="text-neon-blue">Lifer_Lighdow</span></p>
+                    <div class="flex items-center justify-center md:justify-start mb-4">
+                        <div id="appRatingStars" class="flex text-yellow-400 mr-2">
+                            <!-- Stars will be rendered here -->
+                        </div>
+                        <span id="appRating" class="text-gray-300 font-semibold">4.5</span>
+                        <span class="text-gray-500 mx-2">|</span>
+                        <span id="appDownloads" class="text-gray-300">100K+ 下載</span>
+                    </div>
+                    <button id="downloadAppBtn" class="bg-gradient-to-r from-neon-blue to-neon-pink text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-neon-glow transition-all duration-300 transform hover:scale-105 active:scale-95 border-2 border-transparent hover:border-white">
+                        <span class="relative z-10">下載應用程式</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 截圖/影片 -->
+        <section class="mb-16">
+            <h2 id="screenshotsTitle" class="text-3xl md:text-4xl font-bold text-center mb-10 text-neon-blue animate-pulse-neon">
+                應用程式截圖
+            </h2>
+            <div id="screenshotsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Screenshots will be rendered here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- 應用程式說明 -->
+        <section class="mb-16 bg-gray-800 rounded-xl p-6 md:p-8 shadow-md border border-purple-800">
+            <h2 id="descriptionTitle" class="text-3xl md:text-4xl font-bold mb-6 text-neon-pink animate-pulse-neon">
+                應用程式說明
+            </h2>
+            <p id="appDescription" class="text-lg text-gray-300 leading-relaxed">
+                這裡會是應用程式的詳細說明。
+            </p>
+        </section>
+
+        <!-- 主要功能 -->
+        <section class="mb-16 bg-gray-800 rounded-xl p-6 md:p-8 shadow-md border border-purple-800">
+            <h2 id="featuresTitle" class="text-3xl md:text-4xl font-bold mb-6 text-neon-blue animate-pulse-neon">
+                主要功能
+            </h2>
+            <ul id="appFeaturesList" class="space-y-4 text-lg text-gray-300 list-disc list-inside marker:text-neon-pink">
+                <!-- Features will be rendered here by JavaScript -->
+            </ul>
+        </section>
+
+        <!-- 相關應用程式 -->
+        <section>
+            <h2 id="relatedAppsTitle" class="text-3xl md:text-4xl font-bold text-center mb-10 text-neon-pink animate-pulse-neon">
+                相關應用程式
+            </h2>
+            <div id="relatedAppsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Related apps will be rendered here by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-sm p-6 text-center text-gray-500 border-t border-purple-800 rounded-t-xl mt-16">
+        <p><span id="copyrightYear"></span> <span id="footerAppName">Lifer_Lighdow APP STORE</span>. <span id="rightsReserved">版權所有。</span></p>
+    </footer>
+
+    <script>
+        const messages = {
+            en: {
+                appName: "Lifer_Lighdow APP STORE",
+                appDetails: "App Details",
+                backToHome: "Back to Home",
+                developer: "Developer",
+                liferLighdowDeveloper: "Lifer_Lighdow", // Added developer name
+                rating: "Rating",
+                downloads: "Downloads",
+                downloadApp: "Download App",
+                screenshots: "Screenshots",
+                description: "Description",
+                features: "Key Features",
+                relatedApps: "Related Apps",
+                rightsReserved: "All rights reserved.",
+                language: "Language",
+                unknownDeveloper: "Unknown Developer",
+                // App-specific content
+                cyberpunkOS: "Cyberpunk OS",
+                cyberpunkOS_desc: "Experience the ultimate digital frontier with Cyberpunk OS. A revolutionary operating system designed for the augmented future. Seamlessly integrate your wetware with cutting-edge software, navigate the neon-lit datascapes, and unlock unparalleled processing power. Featuring advanced neural interfaces, robust security protocols, and a fully customizable holographic desktop.",
+                feature_os1: "Advanced Neural Interface for direct brain-computer interaction.",
+                feature_os2: "Unbreakable Encryption: Military-grade security protocols.",
+                feature_os3: "Holographic Desktop: Fully customizable 3D workspace.",
+                neonRunner: "Neon Runner",
+                neonRunner_desc: "Dive into the high-octane world of Neon Runner, a thrilling endless runner game set in a futuristic metropolis. Evade digital hazards, outsmart AI patrols, and collect synth-credits as you race through vibrant, procedurally generated cityscapes. Master parkour moves and activate neon boosts to achieve the highest score and dominate the global leaderboards.",
+                feature_runner1: "Dynamic, procedurally generated cyberpunk cityscapes.",
+                feature_runner2: "Fluid parkour and acrobatic movement system.",
+                feature_runner3: "Global Leaderboards and competitive challenges.",
+                synthwaveStudio: "Synthwave Studio",
+                synthwaveStudio_desc: "Unleash your inner retro-futurist with Synthwave Studio, the definitive music creation app. Craft mesmerizing synthwave tracks with a vast library of vintage analog sounds, drum machines, and pulsating basslines. Intuitive interface, real-time effects, and easy sharing options make it perfect for both aspiring producers and seasoned maestros.",
+                feature_studio1: "Extensive library of classic synthwave sounds and samples.",
+                feature_studio2: "Intuitive interface with real-time effects and mixing.",
+                feature_studio3: "Export tracks in high-quality audio formats.",
+                dataStream: "Data Stream",
+                dataStream_desc: "Data Stream is your personal digital assistant for navigating the information overload of the future. Seamlessly aggregate news feeds, research documents, and personal communications into a single, intuitive interface. Leverage AI-powered analytics to prioritize vital information, identify trends, and stay ahead in the rapidly evolving data-sphere.",
+                feature_data1: "AI-powered information aggregation and prioritization.",
+                feature_data2: "Real-time data analytics and trend identification.",
+                feature_data3: "Secure and encrypted personal data management.",
+                virtualHorizon: "Virtual Horizon",
+                virtualHorizon_desc: "Step into Virtual Horizon, a groundbreaking VR social platform where reality is redefined. Explore breathtaking virtual worlds, connect with friends, and forge new experiences in a limitless digital space. Customize your avatar, attend holographic concerts, or simply relax in a serene cyber-garden. Your virtual life starts here.",
+                feature_vr1: "Expansive and diverse virtual reality environments.",
+                feature_vr2: "Customizable avatars and social interaction tools.",
+                feature_vr3: "Events, games, and experiences within the metaverse.",
+                aiAssistant: "AI Assistant",
+                aiAssistant_desc: "Your indispensable companion in the digital age, AI Assistant learns your preferences and optimizes your daily tasks. From scheduling appointments to managing smart home devices, it anticipates your needs with unparalleled precision. Experience true digital symbiosis and reclaim your time.",
+                feature_ai1: "Personalized task management and scheduling.",
+                feature_ai2: "Smart home device integration and control.",
+                feature_ai3: "Adaptive learning for predictive assistance.",
+                brainBoost: "Brain Boost",
+                brainBoost_desc: "Unlock your cognitive potential with Brain Boost, the leading neural enhancement application. Utilizing advanced biofeedback and neuro-linguistic programming, it sharpens focus, enhances memory, and accelerates learning. Optimized for cybernetically augmented users, but beneficial for all seeking mental edge.",
+                feature_brain1: "Cognitive enhancement through biofeedback and NLP.",
+                feature_brain2: "Memory retention and recall improvement.",
+                feature_brain3: "Accelerated learning capabilities.",
+                metaverseExplorer: "Metaverse Explorer",
+                metaverseExplorer_desc: "Embark on an epic journey across the infinite dimensions of the metaverse with Metaverse Explorer. Discover hidden realms, interact with unique digital entities, and participate in a global, decentralized economy. This is not just a browser; it's a portal to countless realities.",
+                feature_meta1: "Seamless navigation across diverse metaverse platforms.",
+                feature_meta2: "Secure digital asset management and trading.",
+                feature_meta3: "Community-driven content creation and exploration.",
+                securitySuite: "Security Suite",
+                securitySuite_desc: "Protect your digital existence with Security Suite, the impenetrable shield for your data and devices. Featuring real-time threat detection, advanced firewall protection, and quantum-encrypted data vaults. In a world of omnipresent threats, ensure your peace of mind.",
+                feature_secure1: "Real-time threat detection and virus removal.",
+                feature_secure2: "Advanced firewall and network intrusion prevention.",
+                feature_secure3: "Quantum-encrypted data storage and communication.",
+            },
+            zh_TW: {
+                appName: "Lifer_Lighdow APP STORE",
+                appDetails: "應用程式詳情",
+                backToHome: "返回首頁",
+                developer: "開發者",
+                liferLighdowDeveloper: "Lifer_Lighdow", // Added developer name
+                rating: "評分",
+                downloads: "下載次數",
+                downloadApp: "下載應用程式",
+                screenshots: "應用程式截圖",
+                description: "應用程式說明",
+                features: "主要功能",
+                relatedApps: "相關應用程式",
+                rightsReserved: "版權所有。",
+                language: "語言",
+                unknownDeveloper: "未知開發者",
+                // App-specific content
+                cyberpunkOS: "賽博龐克作業系統",
+                cyberpunkOS_desc: "透過賽博龐克作業系統體驗終極的數位前沿。這是一個為增強未來而設計的革命性作業系統。將您的濕件無縫整合到尖端軟體中，導航霓虹燈數據景觀，並釋放無與倫比的處理能力。具有先進的神經介面、強大的安全協定和完全可自定義的全息桌面。",
+                feature_os1: "用於直接腦機互動的先進神經介面。",
+                feature_os2: "堅不可摧的加密：軍用級安全協定。",
+                feature_os3: "全息桌面：完全可自定義的3D工作區。",
+                neonRunner: "霓虹跑者",
+                neonRunner_desc: "潛入霓虹跑者的高辛烷世界，這是一款設定在未來大都市中的驚險刺激的無盡跑酷遊戲。躲避數位危險，智勝AI巡邏隊，並在充滿活力、程式化生成的城市景觀中收集合成幣。掌握跑酷動作並啟動霓虹加速以獲得最高分數並稱霸全球排行榜。",
+                feature_runner1: "動態、程式化生成的賽博龐克城市景觀。",
+                feature_runner2: "流暢的跑酷和雜技移動系統。",
+                feature_runner3: "全球排行榜和競爭性挑戰。",
+                synthwaveStudio: "合成波工作室",
+                synthwaveStudio_desc: "使用Synthwave Studio釋放您內心的復古未來主義者，這是終極的音樂創作應用程式。透過龐大的復古類比聲音庫、鼓機和脈動的低音線，製作令人著迷的合成波曲目。直觀的介面、即時效果和輕鬆的分享選項使其非常適合有抱負的製作人和經驗豐富的大師。",
+                feature_studio1: "廣泛的經典合成波聲音和樣本庫。",
+                feature_studio2: "直觀的介面，具有即時效果和混音功能。",
+                feature_studio3: "以高品質音頻格式導出曲目。",
+                dataStream: "數據流",
+                dataStream_desc: "數據流是您在未來資訊過載中導航的個人數位助理。將新聞提要、研究文件和個人通訊無縫整合到一個單一直觀的介面中。利用AI驅動的分析來優先處理重要資訊，識別趨勢，並在快速發展的數據領域保持領先。",
+                feature_data1: "AI驅動的資訊聚合和優先處理。",
+                feature_data2: "實時數據分析和趨勢識別。",
+                feature_data3: "安全加密的個人數據管理。",
+                virtualHorizon: "虛擬地平線",
+                virtualHorizon_desc: "踏入虛擬地平線，這是一個突破性的VR社交平台，現實在此被重新定義。探索令人驚嘆的虛擬世界，與朋友聯繫，並在無限的數位空間中創造新的體驗。自定義您的頭像，參加全息音樂會，或只是在寧靜的賽博花園中放鬆。您的虛擬生活從這裡開始。",
+                feature_vr1: "廣闊而多樣的虛擬實境環境。",
+                feature_vr2: "可自定義的頭像和社交互動工具。",
+                feature_vr3: "元宇宙內的活動、遊戲和體驗。",
+                aiAssistant: "AI 助理",
+                aiAssistant_desc: "作為您在數位時代不可或缺的伴侶，AI 助理學習您的偏好並優化您的日常任務。從安排約會到管理智能家居設備，它以無與倫比的精準度預測您的需求。體驗真正的數位共生並重新找回您的時間。",
+                feature_ai1: "個性化任務管理和日程安排。",
+                feature_ai2: "智能家居設備整合和控制。",
+                feature_ai3: "用於預測性協助的自適應學習。",
+                brainBoost: "腦力增強",
+                brainBoost_desc: "透過腦力增強釋放您的認知潛力，這是領先的神經增強應用程式。利用先進的生物反饋和神經語言程式設計，它能提高專注力、增強記憶力並加速學習。針對賽博格增強型用戶進行了優化，但對所有尋求精神優勢的人都有益。",
+                feature_brain1: "透過生物反饋和NLP進行認知增強。",
+                feature_brain2: "記憶保留和回憶改善。",
+                feature_brain3: "加速學習能力。",
+                metaverseExplorer: "元宇宙探索者",
+                metaverseExplorer_desc: "使用元宇宙探索者踏上穿越元宇宙無限維度的史詩之旅。發現隱藏的領域，與獨特的數位實體互動，並參與全球去中心化經濟。這不僅僅是一個瀏覽器；它是一個通往無數現實的門戶。",
+                feature_meta1: "跨多個元宇宙平台的無縫導航。",
+                feature_meta2: "安全的數位資產管理和交易。",
+                feature_meta3: "社區驅動的內容創建和探索。",
+                securitySuite: "安全套件",
+                securitySuite_desc: "使用安全套件保護您的數位存在，這是您的數據和設備的堅不可摧的盾牌。具有實時威脅檢測、先進的防火牆保護和量子加密數據保險庫。在一個無處不在的威脅世界中，確保您的心靈平靜。",
+                feature_secure1: "實時威脅檢測和病毒清除。",
+                feature_secure2: "先進的防火牆和網路入侵防禦。",
+                feature_secure3: "量子加密數據儲存和通訊。",
+            },
+            zh_CN: {
+                appName: "Lifer_Lighdow APP STORE",
+                appDetails: "应用程序详情",
+                backToHome: "返回首页",
+                developer: "开发者",
+                liferLighdowDeveloper: "Lifer_Lighdow", // Added developer name
+                rating: "评分",
+                downloads: "下载次数",
+                downloadApp: "下载应用程序",
+                screenshots: "应用程序截图",
+                description: "应用程序说明",
+                features: "主要功能",
+                relatedApps: "相关应用程序",
+                rightsReserved: "版权所有。",
+                language: "语言",
+                unknownDeveloper: "未知开发者",
+                // App-specific content
+                cyberpunkOS: "赛博朋克操作系统",
+                cyberpunkOS_desc: "通过赛博朋克操作系统体验终极的数字前沿。这是一个为增强未来而设计的革命性操作系统。将您的湿件无缝整合到尖端软件中，导航霓虹灯数据景观，并释放无与伦比的处理能力。具有先进的神经界面、强大的安全协议和完全可自定义的全息桌面。",
+                feature_os1: "用于直接脑机互动的先进神经界面。",
+                feature_os2: "坚不可摧的加密：军用级安全协议。",
+                feature_os3: "全息桌面：完全可自定义的3D工作区。",
+                neonRunner: "霓虹跑者",
+                neonRunner_desc: "潜入霓虹跑者的高辛烷世界，这是一款设定在未来大都市中的惊险刺激的无尽跑酷游戏。躲避数字危险，智胜AI巡逻队，并在充满活力、程序化生成的城市景观中收集合成币。掌握跑酷动作并启动霓虹加速以获得最高分数并称霸全球排行榜。",
+                feature_runner1: "动态、程序化生成的赛博朋克城市景观。",
+                feature_runner2: "流畅的跑酷和杂技移动系统。",
+                feature_runner3: "全球排行榜和竞争性挑战。",
+                synthwaveStudio: "合成波工作室",
+                synthwaveStudio_desc: "使用Synthwave Studio释放您内心的复古未来主义者，这是终极的音乐创作应用程序。通过庞大的复古模拟音库、鼓机和脉动的低音线，制作令人着迷的合成波曲目。直观的界面、实时效果和轻松的分享选项使其非常适合有抱负的制作人和经验丰富的大师。",
+                feature_studio1: "广泛的经典合成波声音和样本库。",
+                feature_studio2: "直观的界面，具有实时效果和混音功能。",
+                feature_studio3: "以高质量音频格式导出曲目。",
+                dataStream: "数据流",
+                dataStream_desc: "数据流是您在未来信息过载中导航的个人数字助理。将新闻提要、研究文件和个人通信无缝整合到一个单一直观的界面中。利用AI驱动的分析来优先处理重要信息，识别趋势，并在快速发展的数据领域保持领先。",
+                feature_data1: "AI驱动的信息聚合和优先处理。",
+                feature_data2: "实时数据分析和趋势识别。",
+                feature_data3: "安全加密的个人数据管理。",
+                virtualHorizon: "虚拟地平线",
+                virtualHorizon_desc: "踏入虚拟地平线，这是一个突破性的VR社交平台，现实在此被重新定义。探索令人惊叹的虚拟世界，与朋友联系，并在无限的数字空间中创造新的体验。自定义您的头像，参加全息音乐会，或只是在宁静的赛博花园中放松。您的虚拟生活从这里开始。",
+                feature_vr1: "广阔而多样的虚拟现实环境。",
+                feature_vr2: "可自定义的头像和社交互动工具。",
+                feature_vr3: "元宇宙内的活动、游戏和体验。",
+                aiAssistant: "AI 助理",
+                aiAssistant_desc: "作为您在数字时代不可或缺的伴侣，AI 助理学习您的偏好并优化您的日常任务。从安排约会到管理智能家居设备，它以无与伦比的精准度预测您的需求。体验真正的数字共生并重新找回您的时间。",
+                feature_ai1: "个性化任务管理和日程安排。",
+                feature_ai2: "智能家居设备整合和控制。",
+                feature_ai3: "用于预测性协助的自适应学习。",
+                brainBoost: "脑力增强",
+                brainBoost_desc: "通过脑力增强释放您的认知潜力，这是领先的神经增强应用程序。利用先进的生物反馈和神经语言编程，它能提高专注力、增强记忆力并加速学习。针对赛博格增强型用户进行了优化，但对所有寻求精神优势的人都有益。",
+                feature_brain1: "通过生物反馈和NLP进行认知增强。",
+                feature_brain2: "记忆保留和回忆改善。",
+                feature_brain3: "加速学习能力。",
+                metaverseExplorer: "元宇宙探索者",
+                metaverseExplorer_desc: "使用元宇宙探索者踏上穿越元宇宙无限维度的史诗之旅。发现隐藏的领域，与独特的数字实体互动，并参与全球去中心化经济。这不仅仅是一个浏览器；它是一个通往无数现实的门户。",
+                feature_meta1: "跨多个元宇宙平台的无缝导航。",
+                feature_meta2: "安全的数字资产管理和交易。",
+                feature_meta3: "社区驱动的内容创建和探索。",
+                securitySuite: "安全套件",
+                securitySuite_desc: "使用安全套件保护您的数字存在，这是您的数据和设备的安全可靠的盾牌。具有实时威胁检测、先进的防火墙保护和量子加密数据保管库。在一个无处不在的威胁世界中，确保您的心灵活平静。",
+                feature_secure1: "实时威胁检测和病毒清除。",
+                feature_secure2: "先进的防火墙和网络入侵防御。",
+                feature_secure3: "量子加密数据存储和通信。",
+            },
+            ja: {
+                appName: "Lifer_Lighdow APP STORE",
+                appDetails: "アプリ詳細",
+                backToHome: "ホームに戻る",
+                developer: "開発元",
+                liferLighdowDeveloper: "Lifer_Lighdow", // Added developer name
+                rating: "評価",
+                downloads: "ダウンロード数",
+                downloadApp: "アプリをダウンロード",
+                screenshots: "アプリのスクリーンショット",
+                description: "アプリの説明",
+                features: "主な機能",
+                relatedApps: "関連アプリ",
+                rightsReserved: "全著作権所有。",
+                language: "言語",
+                unknownDeveloper: "不明な開発元",
+                // App-specific content
+                cyberpunkOS: "サイバーパンクOS",
+                cyberpunkOS_desc: "サイバーパンクOSで究極のデジタルフロンティアを体験してください。拡張された未来のために設計された革新的なオペレーティングシステムです。ウェットウェアを最先端のソフトウェアにシームレスに統合し、ネオンライトのデータスケープをナビゲートし、比類のない処理能力を解き放ちます。高度なニューラルインターフェース、堅牢なセキュリティプロトコル、完全にカスタマイズ可能なホログラフィックデスクトップを搭載しています。",
+                feature_os1: "直接的な脳とコンピューターの相互作用のための高度なニューラルインターフェース。",
+                feature_os2: "破られない暗号化：軍事レベルのセキュリティプロトコル。",
+                feature_os3: "ホログラフィックデスクトップ：完全にカスタマイズ可能な3Dワークスペース。",
+                neonRunner: "ネオンランナー",
+                neonRunner_desc: "ネオンランナーのハイオクタンな世界に飛び込みましょう。未来のメトロポリスを舞台にしたスリリングなエンドレスランナーゲームです。デジタルハザードを回避し、AIパトロールを出し抜き、活気に満ちた手続き型生成の都市景観を駆け抜けながらシンセクレジットを集めます。パルクールムーブをマスターし、ネオンブーストを発動して最高スコアを達成し、グローバルリーダーボードを支配しましょう。",
+                feature_runner1: "動的で手続き型生成のサイバーパンク都市景観。",
+                feature_runner2: "流れるようなパルクールとアクロバティックな移動システム。",
+                feature_runner3: "グローバルリーダーボードと競争チャレンジ。",
+                synthwaveStudio: "シンセウェーブスタジオ",
+                synthwaveStudio_desc: "Synthwave Studioで内なるレトロフューチャリストを解き放ちましょう。これは決定版の音楽制作アプリです。膨大なビンテージアナログサウンド、ドラムマシン、脈打つベースラインのライブラリを使って、魅惑的なシンセウェーブトラックを作成します。直感的なインターフェース、リアルタイムエフェクト、簡単な共有オプションにより、意欲的なプロデューサーにもベテランの巨匠にも最適です。",
+                feature_studio1: "クラシックなシンセウェーブサウンドとサンプルの豊富なライブラリ。",
+                feature_studio2: "リアルタイムエフェクトとミキシング機能を備えた直感的なインターフェース。",
+                feature_studio3: "高品質なオーディオ形式でトラックをエクスポート。",
+                dataStream: "データストリーム",
+                dataStream_desc: "データストリームは、未来の情報過多をナビゲートするためのパーソナルデジタルアシスタントです。ニュースフィード、研究文書、個人通信を単一の直感的なインターフェースにシームレスに集約します。AIを活用した分析を利用して重要な情報を優先し、トレンドを特定し、急速に進化するデータ領域でリードを保ちます。",
+                feature_data1: "AIを活用した情報集約と優先順位付け。",
+                feature_data2: "リアルタイムのデータ分析とトレンド特定。",
+                feature_data3: "安全で暗号化された個人データ管理。",
+                virtualHorizon: "バーチャルホライゾン",
+                virtualHorizon_desc: "バーチャルホライゾンに足を踏み入れましょう。現実が再定義される画期的なVRソーシャルプラットフォームです。息をのむような仮想世界を探索し、友達とつながり、無限のデジタル空間で新しい体験を築き上げましょう。アバターをカスタマイズし、ホログラフィックコンサートに参加したり、静かなサイバーガーデンでリラックスしたりできます。あなたの仮想生活はここから始まります。",
+                feature_vr1: "広大で多様なバーチャルリアリティ環境。",
+                feature_vr2: "カスタマイズ可能なアバターとソーシャルインタラクションツール。",
+                feature_vr3: "メタバース内のイベント、ゲーム、体験。",
+                aiAssistant: "AIアシスタント",
+                aiAssistant_desc: "デジタル時代に欠かせないあなたの相棒、AIアシスタントはあなたの好みを学習し、日常のタスクを最適化します。予定のスケジュールからスマートホームデバイスの管理まで、比類のない精度であなたのニーズを予測します。真のデジタル共生を体験し、あなたの時間を取り戻しましょう。",
+                feature_ai1: "パーソナライズされたタスク管理とスケジュール設定。",
+                feature_ai2: "スマートホームデバイスの統合と制御。",
+                feature_ai3: "予測支援のための適応学習。",
+                brainBoost: "脳ブースト",
+                brainBoost_desc: "最先端のニューラルエンハンスメントアプリケーションであるブレインブーストで、あなたの認知能力を解き放ちましょう。高度なバイオフィードバックと神経言語プログラミングを利用して、集中力を高め、記憶力を向上させ、学習を加速させます。サイバネティクス強化ユーザー向けに最適化されていますが、精神的な優位性を求めるすべての人に有益です。",
+                feature_brain1: "バイオフィードバックとNLPによる認知能力強化。",
+                feature_brain2: "記憶力保持と想起の改善。",
+                feature_brain3: "学習能力の加速。",
+                metaverseExplorer: "メタバースエクスプローラー",
+                metaverseExplorer_desc: "メタバースエクスプローラーで、メタバースの無限の次元を横断する壮大な旅に出かけましょう。隠された領域を発見し、ユニークなデジタルエンティティと交流し、グローバルで分散型の経済に参加しましょう。これは単なるブラウザではありません。無数の現実に通じるポータルです。",
+                feature_meta1: "多様なメタバースプラットフォーム間のシームレスなナビゲーション。",
+                feature_meta2: "安全なデジタル資産管理と取引。",
+                feature_meta3: "コミュニティ主導のコンテンツ作成と探索。",
+                securitySuite: "セキュリティスイート",
+                securitySuite_desc: "Security Suiteでデジタル存在を保護し、データとデバイスのための堅牢なシールドを提供します。リアルタイムの脅威検出、高度なファイアウォール保護、量子暗号化データ保管庫を搭載。遍在する脅威の世界で、心の平和を確保しましょう。",
+                feature_secure1: "リアルタイムの脅威検出とウイルス除去。",
+                feature_secure2: "高度なファイアウォールとネットワーク侵入防止。",
+                feature_secure3: "量子暗号化されたデータストレージと通信。",
+            },
+        };
+
+        const appDetailsData = {
+            "1": { // appId for Cyberpunk OS
+                nameKey: 'cyberpunkOS',
+                rating: 4.8,
+                downloads: '1.2M+',
+                descriptionKey: 'cyberpunkOS_desc',
+                featuresKeys: ['feature_os1', 'feature_os2', 'feature_os3'],
+                screenshots: [
+                    'https://placehold.co/600x400/1a1a2e/e0e0e0?text=OS+Screen+1',
+                    'https://placehold.co/600x400/1a1a2e/e0e0e0?text=OS+Screen+2',
+                    'https://placehold.co/600x400/1a1a2e/e0e0e0?text=OS+Screen+3'
+                ],
+                relatedApps: ["2", "4"] // IDs of related apps
+            },
+            "2": { // appId for Neon Runner
+                nameKey: 'neonRunner',
+                rating: 4.5,
+                downloads: '850K+',
+                descriptionKey: 'neonRunner_desc',
+                featuresKeys: ['feature_runner1', 'feature_runner2', 'feature_runner3'],
+                screenshots: [
+                    'https://placehold.co/600x400/0f0f0f/00ff00?text=Game+Screen+1',
+                    'https://placehold.co/600x400/0f0f0f/00ff00?text=Game+Screen+2',
+                    'https://placehold.co/600x400/0f0f0f/00ff00?text=Game+Screen+3'
+                ],
+                relatedApps: ["1", "5"]
+            },
+            "3": { // appId for Synthwave Studio
+                nameKey: 'synthwaveStudio',
+                rating: 4.7,
+                downloads: '600K+',
+                descriptionKey: 'synthwaveStudio_desc',
+                featuresKeys: ['feature_studio1', 'feature_studio2', 'feature_studio3'],
+                screenshots: [
+                    'https://placehold.co/600x400/2b0f49/ff00ff?text=Synth+Screen+1',
+                    'https://placehold.co/600x400/2b0f49/ff00ff?text=Synth+Screen+2',
+                    'https://placehold.co/600x400/2b0f49/ff00ff?text=Synth+Screen+3'
+                ],
+                relatedApps: ["7", "8"]
+            },
+            "4": { // appId for Data Stream
+                nameKey: 'dataStream',
+                rating: 4.6,
+                downloads: '900K+',
+                descriptionKey: 'dataStream_desc',
+                featuresKeys: ['feature_data1', 'feature_data2', 'feature_data3'],
+                screenshots: [
+                    'https://placehold.co/600x400/000000/00ffff?text=Data+Screen+1',
+                    'https://placehold.co/600x400/000000/00ffff?text=Data+Screen+2',
+                    'https://placehold.co/600x400/000000/00ffff?text=Data+Screen+3'
+                ],
+                relatedApps: ["1", "6"]
+            },
+            "5": { // appId for Virtual Horizon
+                nameKey: 'virtualHorizon',
+                rating: 4.9,
+                downloads: '1.5M+',
+                descriptionKey: 'virtualHorizon_desc',
+                featuresKeys: ['feature_vr1', 'feature_vr2', 'feature_vr3'],
+                screenshots: [
+                    'https://placehold.co/600x400/0a0a0a/00aaff?text=VR+Screen+1',
+                    'https://placehold.co/600x400/0a0a0a/00aaff?text=VR+Screen+2',
+                    'https://placehold.co/600x400/0a0a0a/00aaff?text=VR+Screen+3'
+                ],
+                relatedApps: ["2", "8"]
+            },
+            "6": { // appId for AI Assistant
+                nameKey: 'aiAssistant',
+                rating: 4.7,
+                downloads: '1.1M+',
+                descriptionKey: 'aiAssistant_desc',
+                featuresKeys: ['feature_ai1', 'feature_ai2', 'feature_ai3'],
+                screenshots: [
+                    'https://placehold.co/600x400/0d0d0d/ffdd00?text=AI+Screen+1',
+                    'https://placehold.co/600x400/0d0d0d/ffdd00?text=AI+Screen+2',
+                    'https://placehold.co/600x400/0d0d0d/ffdd00?text=AI+Screen+3'
+                ],
+                relatedApps: ["4", "7"]
+            },
+            "7": { // appId for Brain Boost
+                nameKey: 'brainBoost',
+                rating: 4.4,
+                downloads: '700K+',
+                descriptionKey: 'brainBoost_desc',
+                featuresKeys: ['feature_brain1', 'feature_brain2', 'feature_brain3'],
+                screenshots: [
+                    'https://placehold.co/600x400/111111/ff0077?text=Brain+Screen+1',
+                    'https://placehold.co/600x400/111111/ff0077?text=Brain+Screen+2',
+                    'https://placehold.co/600x400/111111/ff0077?text=Brain+Screen+3'
+                ],
+                relatedApps: ["3", "6"]
+            },
+            "8": { // appId for Metaverse Explorer
+                nameKey: 'metaverseExplorer',
+                rating: 4.9,
+                downloads: '1.8M+',
+                descriptionKey: 'metaverseExplorer_desc',
+                featuresKeys: ['feature_meta1', 'feature_meta2', 'feature_meta3'],
+                screenshots: [
+                    'https://placehold.co/600x400/050505/cc66ff?text=Meta+Screen+1',
+                    'https://placehold.co/600x400/050505/cc66ff?text=Meta+Screen+2',
+                    'https://placehold.co/600x400/050505/cc66ff?text=Meta+Screen+3'
+                ],
+                relatedApps: ["3", "5"]
+            },
+            "9": { // appId for Security Suite
+                nameKey: 'securitySuite',
+                rating: 4.8,
+                downloads: '1.0M+',
+                descriptionKey: 'securitySuite_desc',
+                featuresKeys: ['feature_secure1', 'feature_secure2', 'feature_secure3'],
+                screenshots: [
+                    'https://placehold.co/600x400/020202/00ffaa?text=Secure+Screen+1',
+                    'https://placehold.co/600x400/020202/00ffaa?text=Secure+Screen+2',
+                    'https://placehold.co/600x400/020202/00ffaa?text=Secure+Screen+3'
+                ],
+                relatedApps: ["1", "4"]
+            },
+        };
+
+        let currentLang = 'zh_TW';
+        let currentAppId = '1'; // Default app ID
+
+        // Function to get query parameter from URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Render star SVG for rating
+        function renderStars(rating) {
+            const appRatingStarsContainer = document.getElementById('appRatingStars');
+            appRatingStarsContainer.innerHTML = ''; // Clear existing stars
+
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 !== 0;
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+            for (let i = 0; i < fullStars; i++) {
+                appRatingStarsContainer.innerHTML += `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                `;
+            }
+            if (halfStar) {
+                appRatingStarsContainer.innerHTML += `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star-half"><path d="M12 17.8 5.8 21 7 14.1 2 9.2l7-1 3-6 3 6 7 1-5 4.9 1.2 6.9zM12 2v15.77"/></svg>
+                `;
+            }
+            for (let i = 0; i < emptyStars; i++) {
+                appRatingStarsContainer.innerHTML += `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                `;
+            }
+        }
+
+
+        // 更新頁面所有文本內容的函數
+        function updateContent() {
+            const currentMessages = messages[currentLang];
+            const app = appDetailsData[currentAppId];
+
+            if (!app) {
+                // Handle case where app ID is not found
+                document.getElementById('appDetailName').textContent = currentMessages.appDetails; // Display a generic title
+                document.getElementById('appDeveloper').innerHTML = `${currentMessages.developer}：<span class="text-neon-blue">${currentMessages.unknownDeveloper}</span>`;
+                document.getElementById('appRating').textContent = "-";
+                document.getElementById('appDownloads').textContent = "-";
+                document.getElementById('appDescription').textContent = "無法找到此應用程式的詳細資訊。";
+                document.getElementById('appFeaturesList').innerHTML = '';
+                document.getElementById('screenshotsContainer').innerHTML = '<p class="text-center text-gray-400">無截圖</p>';
+                document.getElementById('relatedAppsContainer').innerHTML = '<p class="text-center text-gray-400">無相關應用程式</p>';
+                document.getElementById('downloadAppBtn').querySelector('span:first-child').textContent = currentMessages.downloadApp; // Still show the button text
+                document.getElementById('appIcon').src = 'https://placehold.co/150x150/333/eee?text=App';
+                renderStars(0); // No stars
+                document.getElementById('pageTitle').textContent = `${currentMessages.appName} - ${currentMessages.appDetails}`;
+                return;
+            }
+
+            // 導覽列
+            document.getElementById('appNamePart1').textContent = currentMessages.appName.split('_')[0];
+            document.getElementById('appNamePart2').textContent = '_' + currentMessages.appName.split('_')[1].split(' ')[0];
+            document.getElementById('backToHomeBtn').textContent = currentMessages.backToHome;
+            document.getElementById('pageTitle').textContent = `${currentMessages.appName} - ${currentMessages[app.nameKey]}`;
+
+
+            // 應用程式總覽
+            document.getElementById('appIcon').src = app.screenshots[0] || 'https://placehold.co/150x150/333/eee?text=App'; // Use first screenshot as icon, or placeholder
+            document.getElementById('appDetailName').textContent = currentMessages[app.nameKey];
+            // 更新開發者為 Lifer_Lighdow
+            document.getElementById('appDeveloper').innerHTML = `${currentMessages.developer}：<span class="text-neon-blue">${currentMessages.liferLighdowDeveloper}</span>`;
+            
+            document.getElementById('appRating').textContent = app.rating.toFixed(1);
+            renderStars(app.rating); // Render star icons
+            document.getElementById('appDownloads').textContent = `${app.downloads} ${currentMessages.downloads}`;
+            document.getElementById('downloadAppBtn').querySelector('span:first-child').textContent = currentMessages.downloadApp;
+
+            // 截圖/影片
+            document.getElementById('screenshotsTitle').textContent = currentMessages.screenshots;
+            renderScreenshots(app.screenshots, currentMessages[app.nameKey]);
+
+            // 應用程式說明
+            document.getElementById('descriptionTitle').textContent = currentMessages.description;
+            document.getElementById('appDescription').textContent = currentMessages[app.descriptionKey];
+
+            // 主要功能
+            document.getElementById('featuresTitle').textContent = currentMessages.features;
+            renderFeatures(app.featuresKeys, currentMessages);
+
+            // 相關應用程式
+            document.getElementById('relatedAppsTitle').textContent = currentMessages.relatedApps;
+            renderRelatedApps(app.relatedApps, currentMessages);
+
+            // 頁腳
+            document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+            document.getElementById('footerAppName').textContent = currentMessages.appName;
+            document.getElementById('rightsReserved').textContent = currentMessages.rightsReserved;
+        }
+
+        // 渲染截圖
+        function renderScreenshots(screenshots, appName) {
+            const screenshotsContainer = document.getElementById('screenshotsContainer');
+            screenshotsContainer.innerHTML = ''; // 清空現有內容
+
+            if (screenshots && screenshots.length > 0) {
+                screenshots.forEach((src, index) => {
+                    const div = document.createElement('div');
+                    div.className = "rounded-xl overflow-hidden shadow-lg border border-purple-600 transform hover:scale-105 transition-transform duration-300";
+                    div.innerHTML = `
+                        <img src="${src}" alt="${appName} Screenshot ${index + 1}" class="w-full h-auto object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x400/333/eee?text=Screenshot+Not+Available';" />
+                    `;
+                    screenshotsContainer.appendChild(div);
+                });
+            } else {
+                screenshotsContainer.innerHTML = '<p class="text-center text-gray-400">無截圖</p>';
+            }
+        }
+
+        // 渲染功能列表
+        function renderFeatures(featureKeys, currentMessages) {
+            const appFeaturesList = document.getElementById('appFeaturesList');
+            appFeaturesList.innerHTML = ''; // 清空現有內容
+
+            if (featureKeys && featureKeys.length > 0) {
+                featureKeys.forEach(key => {
+                    const li = document.createElement('li');
+                    li.textContent = currentMessages[key];
+                    appFeaturesList.appendChild(li);
+                });
+            } else {
+                appFeaturesList.innerHTML = '<p class="text-gray-400">無可用功能描述。</p>';
+            }
+        }
+
+        // 渲染相關應用程式
+        function renderRelatedApps(relatedAppIds, currentMessages) {
+            const relatedAppsContainer = document.getElementById('relatedAppsContainer');
+            relatedAppsContainer.innerHTML = ''; // 清空現有內容
+
+            if (relatedAppIds && relatedAppIds.length > 0) {
+                relatedAppIds.forEach(id => {
+                    const app = appDetailsData[id];
+                    if (app) {
+                        const div = document.createElement('div');
+                        div.className = "bg-gray-800 rounded-xl p-6 flex flex-col items-center text-center shadow-lg border border-purple-800 hover:border-neon-blue transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl relative overflow-hidden";
+                        div.innerHTML = `
+                            <img src="${app.screenshots[0] || 'https://placehold.co/120x120/333/eee?text=App'}" alt="${currentMessages[app.nameKey]}" class="w-28 h-28 rounded-2xl object-cover mb-4 border-2 border-neon-blue shadow-md z-10" onerror="this.onerror=null;this.src='https://placehold.co/120x120/333/eee?text=App';" />
+                            <h3 class="text-2xl font-semibold text-gray-100 mb-2 glitch-text z-10">${currentMessages[app.nameKey]}</h3>
+                            <p class="text-purple-400 text-sm mb-4 z-10">${currentMessages.developer}：${currentMessages.liferLighdowDeveloper}</p>
+                            <a href="app-detail.html?id=${id}" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-2 px-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 active:scale-95 border border-transparent hover:border-white z-10">
+                                ${currentMessages.downloadApp}
+                            </a>
+                        `;
+                        relatedAppsContainer.appendChild(div);
+                    }
+                });
+            } else {
+                relatedAppsContainer.innerHTML = '<p class="text-center text-gray-400">無相關應用程式</p>';
+            }
+        }
+
+
+        // 事件監聽器
+        document.addEventListener('DOMContentLoaded', () => {
+            const languageSelector = document.getElementById('languageSelector');
+
+            // 從 URL 獲取應用程式 ID
+            const urlAppId = getQueryParam('id');
+            if (urlAppId && appDetailsData[urlAppId]) {
+                currentAppId = urlAppId;
+            } else {
+                // 如果 URL 中沒有 ID 或 ID 無效，則導向首頁，或顯示錯誤訊息
+                // 為了這個範例，我們將顯示預設的 app 1
+                 console.warn("App ID not found in URL or invalid. Displaying default app (ID 1).");
+                 currentAppId = '1';
+            }
+
+
+            languageSelector.value = currentLang;
+
+            languageSelector.addEventListener('change', (event) => {
+                currentLang = event.target.value;
+                updateContent();
+            });
+
+            updateContent(); // 初始加載內容
+        });
+    </script>
+</body>
+</html>
